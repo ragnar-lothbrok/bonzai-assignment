@@ -1,0 +1,5 @@
+Steps :
+1. Go to bonzai-ads directory
+2. Execute mvn clean install
+3. execute java -jar generic-sql/target/generic-sql-0.0.1-SNAPSHOT.jar com.assignment.Application
+4. localhost:8888/report-service?startdate=2017-01-01&enddate=2017-02-01&dimension=campaign.name,ad.name&metrics=impression,clicks
