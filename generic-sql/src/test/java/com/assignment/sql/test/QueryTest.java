@@ -11,13 +11,13 @@ import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.assignment.Application;
+import com.assignment.SQLApplication;
 import com.assignment.sql.api.IReportRequestParser;
 import com.assignment.sql.dtos.ReportRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-	classes = Application.class,
+	classes = SQLApplication.class,
 	loader = SpringApplicationContextLoader.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QueryTest {

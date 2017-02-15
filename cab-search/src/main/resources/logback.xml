@@ -2,13 +2,13 @@
 <configuration>
 	<appender name="FILE_METRIC"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/apps/logs/generic_sql.log</file>
+		<file>/apps/logs/cabsearch.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %class{36}.%M %L -
 				%msg%n </Pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/apps//logs/generic_sql.log.%d{yyyy-MM-dd}.%i.gz
+			<fileNamePattern>/apps//logs/cabsearch.log.%d{yyyy-MM-dd}.%i.gz
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

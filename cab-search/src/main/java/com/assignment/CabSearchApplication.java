@@ -6,11 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-public class Application {
-	
+@EnableAutoConfiguration(
+	exclude = { DataSourceAutoConfiguration.class })
+public class CabSearchApplication {
+
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(CabSearchApplication.class, args);
 	}
-	
+
 }

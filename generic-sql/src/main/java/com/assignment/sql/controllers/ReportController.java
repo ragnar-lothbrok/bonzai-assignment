@@ -28,6 +28,7 @@ public class ReportController {
 	@Autowired
 	private IReportRequestParser reportRequestParser;
 
+
 	@RequestMapping(
 		method = { RequestMethod.GET })
 	@ResponseBody

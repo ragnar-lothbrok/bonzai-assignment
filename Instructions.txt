@@ -3,3 +3,18 @@ Steps :
 2. Execute mvn clean install
 3. execute java -jar generic-sql/target/generic-sql-0.0.1-SNAPSHOT.jar com.assignment.Application
 4. localhost:8888/report-service?startdate=2017-01-01&enddate=2017-02-01&dimension=campaign.name,ad.name&metrics=impression,clicks
+
+Steps :
+
+1. Go to bonzai-ads directory
+2. Execute mvn clean install
+3. java -jar cab-search/target/cab-search-0.0.1-SNAPSHOT.jar
+4. Running Port : 8088
+
+
+http://localhost:8088/geo/search
+{"location":{"latitude":40.922325,"longitude":-72.63708},"range":10.33434}
+
+
+http://localhost:8088/geo/index
+[{"vehicleNumber":"Holtsville-00501","location":{"latitude":40.922325,"longitude":-72.63708}}]
