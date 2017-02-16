@@ -37,7 +37,7 @@ public class GeoServiceTest {
 		location.setLatitude(40.922326f);
 		location.setLongitude(-72.637078f);
 		SearchDto searchDto = new SearchDto();
-		searchDto.setRange(10.33434f);
+		searchDto.setRange(10.33434);
 		searchDto.setLocation(location);
 		List<Vehicle> vehicleList = geoLocatorService.getVehicleInRange(searchDto.getLocation(), searchDto.getRange());
 		assertNotNull(vehicleList);
@@ -54,7 +54,7 @@ public class GeoServiceTest {
 		List<Vehicle> vehicleList = new ArrayList<Vehicle>();
 		vehicleList.add(vehicle);
 		System.out.println(new Gson().toJson(vehicleList));
-		Boolean result = geoLocatorService.addLocations(vehicle);
+		Boolean result = geoLocatorService.addLocation(vehicle);
 		assertNotNull(result);
 	}
 

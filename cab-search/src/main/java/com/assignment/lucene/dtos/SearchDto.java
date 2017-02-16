@@ -11,7 +11,7 @@ public class SearchDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Location location;
-	private Float range;
+	private Double range;
 
 	public Location getLocation() {
 		return location;
@@ -21,11 +21,11 @@ public class SearchDto implements Serializable {
 		this.location = location;
 	}
 
-	public Float getRange() {
+	public Double getRange() {
 		return range;
 	}
 
-	public void setRange(Float range) {
+	public void setRange(Double range) {
 		this.range = range;
 	}
 

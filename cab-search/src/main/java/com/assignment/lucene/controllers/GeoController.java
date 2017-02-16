@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.assignment.exceptions.IndexWriteException;
+import com.assignment.exceptions.NoCabFoundException;
 import com.assignment.lucene.api.GeoLocatorService;
 import com.assignment.lucene.dtos.SearchDto;
 import com.assignment.lucene.dtos.Vehicle;
@@ -34,7 +36,8 @@ public class GeoController {
 		value = "/index",
 		method = RequestMethod.POST,
 		produces = { MediaType.APPLICATION_JSON_VALUE })
-	public Map<String, Object> startIndexing(@RequestBody List<Vehicle> vehicleList, HttpServletRequest request, HttpServletResponse response) {
+	@ResponseBody
+	public Map<String, Object> startIndexing(@RequestBody List<Vehicle> vehicleList, HttpServletRequest request, HttpServletResponse response) throws IndexWriteException{
 		LOGGER.info("Received request in add locations method.");
 		Map<String, Object> map = new HashMap<String, Object>();
 		Boolean result = geoLocatorService.addLocations(vehicleList);
@@ -47,7 +50,7 @@ public class GeoController {
 		method = RequestMethod.POST,
 		produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
-	public List<Vehicle> search(@RequestBody SearchDto searchDto, HttpServletRequest request, HttpServletResponse response) {
+	public List<Vehicle> search(@RequestBody SearchDto searchDto, HttpServletRequest request, HttpServletResponse response) throws NoCabFoundException{
 		LOGGER.info("Received request in add locations method.");
 		List<Vehicle> result = geoLocatorService.getVehicleInRange(searchDto.getLocation(), searchDto.getRange());
 		return result;

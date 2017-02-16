@@ -22,10 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.assignment.exceptions.IndexWriteException;
+import com.assignment.exceptions.NoCabFoundException;
 import com.assignment.lucene.api.GeoLocatorService;
 import com.assignment.lucene.dtos.Location;
 import com.assignment.lucene.dtos.Vehicle;
@@ -47,6 +50,14 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 	@Value("${lucene.fetched.neighbour.count}")
 	private Integer fetchedCount;
 
+	volatile private boolean isWriteHappend = false;
+
+	@Autowired
+	private ApplicationContext appContext;
+
+	/**
+	 * This is dummy data pumped in indexer.
+	 */
 	@PostConstruct
 	public void fillData() {
 		BufferedReader bufferedReader = null;
@@ -83,8 +94,11 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 		}
 	}
 
+	/**
+	 * This will add/update vehicle location in indexer.
+	 */
 	@Override
-	public Boolean addLocations(List<Vehicle> vehicles) {
+	public Boolean addLocations(List<Vehicle> vehicles) throws IndexWriteException {
 		try {
 			LOGGER.info("Going to add vehicle locations = {} ", (vehicles != null ? vehicles.size() : 0));
 			if (vehicles.size() > 0) {
@@ -99,15 +113,20 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 				}
 			}
 			indexWriter.commit();
+			isWriteHappend = true;
 		} catch (Exception e) {
 			LOGGER.error("Exception occured while adding document to index = {} ", e);
-			return false;
+			throw new IndexWriteException();
 		}
 		return true;
 	}
 
+	/**
+	 * This method will accept location of user and range within we want to search.
+	 */
 	@Override
-	public List<Vehicle> getVehicleInRange(Location location, Float range) {
+	public List<Vehicle> getVehicleInRange(Location location, Double range) throws NoCabFoundException {
+		indexSearcher = (isWriteHappend ? appContext.getBean(IndexSearcher.class) : indexSearcher);
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		TopDocs docs = null;
 		try {
@@ -124,11 +143,18 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 		} catch (Exception e) {
 			LOGGER.error("Exception occured while fetching document from index = {} ", e);
 		}
+		if (vehicles.size() == 0) {
+			throw new NoCabFoundException();
+		}
+		isWriteHappend = false;
 		return vehicles;
 	}
 
+	/**
+	 * This will add/update single vehicle position in indexer.
+	 */
 	@Override
-	public Boolean addLocations(Vehicle vehicle) {
+	public Boolean addLocation(Vehicle vehicle) {
 		try {
 			if (vehicle != null && vehicle.getLocation() != null && vehicle.getLocation().getLatitude() != null
 					&& vehicle.getLocation().getLongitude() != null) {

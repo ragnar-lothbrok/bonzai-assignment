@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
+/**
+ * This will start application.
+ * @author raghunandangupta
+ *
+ */
 @SpringBootApplication
 @EnableAutoConfiguration(
 	exclude = { DataSourceAutoConfiguration.class })
