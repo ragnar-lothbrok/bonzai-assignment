@@ -13,6 +13,7 @@ Steps :
 
 
 http://localhost:8088/geo/search
+Range is in meters.
 Request : {"location":{"latitude":40.922325,"longitude":-72.63708},"range":10.33434}
 Response : {"count":4,"vehicleList":[{"vehicleNumber":"Holtsville-00502111"},{"vehicleNumber":"Holtsville-005021121"},{"vehicleNumber":"Holtsville-00501"},{"vehicleNumber":"Holtsville-00544"}]}
 
