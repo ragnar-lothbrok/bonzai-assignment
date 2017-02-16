@@ -28,6 +28,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.assignment.exceptions.IndexWriteException;
+import com.assignment.exceptions.LatLongRangeException;
 import com.assignment.exceptions.NoCabFoundException;
 import com.assignment.lucene.api.GeoLocatorService;
 import com.assignment.lucene.dtos.Location;
@@ -75,9 +76,10 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 				location.setLongitude(Float.parseFloat(str[2]));
 				vehicle.setLocation(location);
 				vehicle.setVehicleNumber(str[3] + "-" + str[0]);
-				if (vehicleList.size() == 1000) {
+				if (vehicleList.size() == 100) {
 					break;
 				}
+				line = bufferedReader.readLine();
 				vehicleList.add(vehicle);
 			}
 			addLocations(vehicleList);
@@ -98,7 +100,7 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 	 * This will add/update vehicle location in indexer.
 	 */
 	@Override
-	public Boolean addLocations(List<Vehicle> vehicles) throws IndexWriteException {
+	public Boolean addLocations(List<Vehicle> vehicles) throws RuntimeException {
 		try {
 			LOGGER.info("Going to add vehicle locations = {} ", (vehicles != null ? vehicles.size() : 0));
 			if (vehicles.size() > 0) {
@@ -114,6 +116,9 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
 			}
 			indexWriter.commit();
 			isWriteHappend = true;
+		}catch(IllegalArgumentException e){
+			LOGGER.error("Exception occured while adding document to index = {} ", e);
+			throw new LatLongRangeException(e.getMessage());
 		} catch (Exception e) {
 			LOGGER.error("Exception occured while adding document to index = {} ", e);
 			throw new IndexWriteException();

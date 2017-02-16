@@ -14,6 +14,16 @@ import com.assignment.lucene.dtos.ErrorResource;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+	@ExceptionHandler({ LatLongRangeException.class })
+	protected ResponseEntity<Object> handleLatLongRangeExceptionRequest(RuntimeException e, WebRequest request) {
+		LatLongRangeException ire = (LatLongRangeException) e;
+		ErrorResource error = new ErrorResource("LAT_LONG_ERROR", e.getMessage());
+		error.setFieldErros(ire.getFieldErrors());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return handleExceptionInternal(e, error, headers, HttpStatus.BAD_REQUEST, request);
+	}
+
 	/**
 	 * @param e
 	 * @param request
@@ -28,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		return handleExceptionInternal(e, error, headers, HttpStatus.BAD_REQUEST, request);
 	}
-	
+
 	@ExceptionHandler({ NoCabFoundException.class })
 	protected ResponseEntity<Object> handleNotFoundRequest(RuntimeException e, WebRequest request) {
 		NoCabFoundException ire = (NoCabFoundException) e;

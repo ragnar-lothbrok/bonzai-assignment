@@ -21,6 +21,7 @@ import com.assignment.exceptions.IndexWriteException;
 import com.assignment.exceptions.NoCabFoundException;
 import com.assignment.lucene.api.GeoLocatorService;
 import com.assignment.lucene.dtos.SearchDto;
+import com.assignment.lucene.dtos.SearchResponse;
 import com.assignment.lucene.dtos.Vehicle;
 
 @Controller
@@ -50,9 +51,12 @@ public class GeoController {
 		method = RequestMethod.POST,
 		produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
-	public List<Vehicle> search(@RequestBody SearchDto searchDto, HttpServletRequest request, HttpServletResponse response) throws NoCabFoundException{
+	public SearchResponse search(@RequestBody SearchDto searchDto, HttpServletRequest request, HttpServletResponse response) throws NoCabFoundException{
 		LOGGER.info("Received request in add locations method.");
 		List<Vehicle> result = geoLocatorService.getVehicleInRange(searchDto.getLocation(), searchDto.getRange());
-		return result;
+		SearchResponse searchResponse = new SearchResponse();
+		searchResponse.setVehicleList(result);
+		searchResponse.setCount(result.size());
+		return searchResponse;
 	}
 }
